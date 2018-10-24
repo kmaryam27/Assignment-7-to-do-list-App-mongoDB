@@ -68,11 +68,26 @@ $(() => {
     taskDel = {
       task_id: String($(this).parent().attr('id'))
     }
+    
+    $.ajax({url: `/api/selected/${taskDel.task_id}`,  method: "GET"}).then(function(selected) {
+        if(selected.compeleted === false){
+          const result = confirm("Are you sure to delete?");
+          if (result) {
+            $.ajax({url: "/api/removeTask",  method: "DELETE", data: taskDel}).then(function() {
+              $("#todo").empty();
+                render();
+              });
+          }
+        }else{
+          $.ajax({url: "/api/removeTask",  method: "DELETE", data: taskDel}).then(function() {
+            $("#todo").empty();
+              render();
+            });
+        }
 
-    $.ajax({url: "/api/removeTask",  method: "DELETE", data: taskDel}).then(function() {
-      $("#todo").empty();
-        render();
       });
+
+    
     }
 
   $('#todo').on('click','#removeBtn' , removeTask);

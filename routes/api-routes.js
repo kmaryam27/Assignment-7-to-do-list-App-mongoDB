@@ -22,6 +22,16 @@ module.exports = function(app) {
     })
   });
 
+  // Make a GET route for getting selected todo list items
+  app.get('/api/selected/:id', function(req, res) {
+    db.ToDoList.findOne({_id: req.params.id}).then(function(dbtodolist){
+      res.json(dbtodolist);
+  })
+  .catch(function(err){
+      res.json(err);
+  })
+});
+
   sampleTable = {
     task: 'study',
     compeleted: false
